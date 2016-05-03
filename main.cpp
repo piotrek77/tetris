@@ -215,7 +215,7 @@ int main(int argc, char* args[])
                         ResetFiguraMatrix();
                         YPosTmp = 0;
                         XPosTmp = 5;
-                        GenerateTmpMatrix(0);
+                        GenerateTmpMatrix(0, TmpMatrix);
                         CRoom = 1;
                     }
                     break;
@@ -640,17 +640,6 @@ void ClearTmpMatrix(TFigura figura[4][4])
 }
 
 
-void ClearTmpMatrix()
-{
-    for (int xp = 0; xp < 4; xp++)
-    {
-        for (int yp = 0; yp < 4; yp++)
-        {
-            TmpMatrix[xp][yp].Used = false;
-        }
-    }
-}
-
 
 
 void FillTmpColor(int color, TFigura figura[4][4])
@@ -666,17 +655,6 @@ void FillTmpColor(int color, TFigura figura[4][4])
 
 
 
-
-void FillTmpColor(int color)
-{
-    for (int xp = 0; xp < 4; xp++)
-    {
-        for (int yp = 0; yp < 4; yp++)
-        {
-            TmpMatrix[xp][yp].Color = color;
-        }
-    }
-}
 
 void VerifyLines()
 {
@@ -935,78 +913,6 @@ void GenerateTmpMatrix(int FigIndex, TFigura  figura[4][4])
 
 
 
-void GenerateTmpMatrix(int FigIndex)
-{
-    // 0 = I, 1 = J, 2 = L, 3 = O, 4 = Z, 5 = T, 6 = S
-    // Clear the old Matrix
-    ClearTmpMatrix();
-    //
-    if (FigIndex == 0)
-    {
-        // I
-        FillTmpColor(TCOLOR_BLUE);
-        TmpMatrix[0][0].Used = true;
-        TmpMatrix[0][1].Used = true;
-        TmpMatrix[0][2].Used = true;
-        TmpMatrix[0][3].Used = true;
-    }
-    if (FigIndex == 1)
-    {
-        // J
-        FillTmpColor(TCOLOR_CYAN);
-        TmpMatrix[1][0].Used = true;
-        TmpMatrix[1][1].Used = true;
-        TmpMatrix[1][2].Used = true;
-        TmpMatrix[0][2].Used = true;
-    }
-    if (FigIndex == 2)
-    {
-        // L
-        FillTmpColor(TCOLOR_GRAY);
-        TmpMatrix[0][0].Used = true;
-        TmpMatrix[0][1].Used = true;
-        TmpMatrix[0][2].Used = true;
-        TmpMatrix[1][2].Used = true;
-    }
-    if (FigIndex == 3)
-    {
-        // O
-        FillTmpColor(TCOLOR_GREEN);
-        TmpMatrix[0][0].Used = true;
-        TmpMatrix[0][1].Used = true;
-        TmpMatrix[1][1].Used = true;
-        TmpMatrix[1][0].Used = true;
-    }
-    if (FigIndex == 4)
-    {
-        // Z
-        FillTmpColor(TCOLOR_ORANGE);
-        TmpMatrix[0][0].Used = true;
-        TmpMatrix[1][0].Used = true;
-        TmpMatrix[1][1].Used = true;
-        TmpMatrix[2][1].Used = true;
-    }
-    if (FigIndex == 5)
-    {
-        // T
-        FillTmpColor(TCOLOR_RED);
-        TmpMatrix[1][0].Used = true;
-        TmpMatrix[0][1].Used = true;
-        TmpMatrix[1][1].Used = true;
-        TmpMatrix[2][1].Used = true;
-    }
-    if (FigIndex == 6)
-    {
-        // S
-        FillTmpColor(TCOLOR_YELLOW);
-        TmpMatrix[0][1].Used = true;
-        TmpMatrix[1][1].Used = true;
-        TmpMatrix[1][0].Used = true;
-        TmpMatrix[2][0].Used = true;
-    }
-    //
-    CalculateTmpSize();
-}
 
 bool LoadFiles()
 {
