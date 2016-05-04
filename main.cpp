@@ -714,6 +714,9 @@ void VerifyLines()
                     }
                 }
             }
+
+            //po obniżeniu całej planszy trzeba ponownie sprawdzić tę samą linię, czyli:
+            yP ++;
             //
             Points += 1;
             if (Points < 10)
