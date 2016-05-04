@@ -118,6 +118,7 @@ void         DrawTetrisMatrix();
 bool         LoadFiles();
 void         UnloadFiles();
 bool         Update();
+bool         TestBlockColisionBoki();
 bool         TestBlockColision();
 void         PutInMatrix();
 int          GetNewFiguraIndex();
@@ -200,7 +201,7 @@ int main(int argc, char* args[])
                 case SDLK_LEFT:
                     XPosTmpBackup = XPosTmp;
                     if (XPosTmp > 0) XPosTmp -= 1;
-                    if (TestBlockColision() == true)
+                    if (TestBlockColisionBoki() == true)
                     {
 
                         XPosTmp = XPosTmpBackup; //jeśli przesunięcie w lewo wywoła kolizję to przywracamy zmienną XPosTmp z kopii
@@ -211,7 +212,7 @@ int main(int argc, char* args[])
                     //przed przesunięciem w prawo sprawdzane jest czy klocek nie wyjdzie poza planszę
                     XPosTmpBackup = XPosTmp;
                     if (XPosTmp < MATRIX_PIECES_X - (WidthTmp + 1)) XPosTmp += 1;
-                    if (TestBlockColision()==true)
+                    if (TestBlockColisionBoki()==true)
                     {
                         XPosTmp = XPosTmpBackup;//jeśli przesunięcie w prawo wywoła kolizję to przywracamy zmienną XPosTmp z kopii
                     }
@@ -391,7 +392,7 @@ int GetNewFiguraIndex()
 
     CRAND = NextFigura;
 
-    NextFigura = 1;//rand()%7;
+    NextFigura = rand()%7;
     //
     return CRAND;
 }
@@ -616,6 +617,47 @@ void CalculateTmpSize()
     WidthTmp = width;
     HeightTmp = height;
 }
+
+
+
+bool TestBlockColisionBoki()
+{
+    if (YPosTmp == 20 - (HeightTmp + 1)) // -msize
+    {
+        return true;
+    }
+    for (int xpt = 0; xpt < 4; xpt++)
+    {
+        for (int ypt = 0; ypt < 4; ypt++)
+        {
+            if (TmpMatrix[xpt][ypt].Used == true)
+            {
+                //
+                //
+                for (int xp = 0; xp < MATRIX_PIECES_X; xp++)
+                {
+                    for (int yp = 0; yp < MATRIX_PIECES_Y; yp++)
+                    {
+                        if (FiguraMatrix[xp][yp].Used == true)
+                        {
+                            //
+                            if (xpt + XPosTmp == xp && ypt + (YPosTmp + 0) == yp)
+                            {
+                                return true;
+                            }
+                            //
+                        }
+                    }
+                }
+                //
+            }
+        }
+    }
+    return false;
+}
+
+
+
 
 bool TestBlockColision()
 {
