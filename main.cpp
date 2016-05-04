@@ -88,6 +88,7 @@ TFigura TmpMatrix[4][4]; // Klocki (tetrimino) zlozone z czterech malych kwadrat
 TFigura TmpNextMatrix[4][4]; //klocek następny (wyświetlany po prawej stronie)
 
 int XPosTmp = 4;
+int XPosTmpBackup; //zmienna pomocnicza, przechowuje kopię zmienne XPosTemp
 int YPosTmp = 0;
 int WidthTmp = 0;
 int HeightTmp = 0;
@@ -174,11 +175,13 @@ int main(int argc, char* args[])
     // Start Music
     if (Mix_PlayingMusic() == 0)
     {
+
         if (Mix_PlayMusic(TetrisMusic, -1) == -1)
         {
             cout << "Error playing music!" << endl;
             return true;
         }
+
     }
     // Start the Game Loop  (klawisze sterujace: LEFT,RIGHT,UP - rotacja,DOWN)
     while (Running)
@@ -195,11 +198,23 @@ int main(int argc, char* args[])
                 switch (event.key.keysym.sym)
                 {
                 case SDLK_LEFT:
+                    XPosTmpBackup = XPosTmp;
                     if (XPosTmp > 0) XPosTmp -= 1;
+                    if (TestBlockColision() == true)
+                    {
+
+                        XPosTmp = XPosTmpBackup; //jeśli przesunięcie w lewo wywoła kolizję to przywracamy zmienną XPosTmp z kopii
+
+                    }
                     break;
                 case SDLK_RIGHT:
                     //przed przesunięciem w prawo sprawdzane jest czy klocek nie wyjdzie poza planszę
+                    XPosTmpBackup = XPosTmp;
                     if (XPosTmp < MATRIX_PIECES_X - (WidthTmp + 1)) XPosTmp += 1;
+                    if (TestBlockColision()==true)
+                    {
+                        XPosTmp = XPosTmpBackup;//jeśli przesunięcie w prawo wywoła kolizję to przywracamy zmienną XPosTmp z kopii
+                    }
                     break;
                 case SDLK_DOWN:
                     DownButton = true;
