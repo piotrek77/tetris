@@ -239,7 +239,9 @@ int main(int argc, char* args[])
                         ResetFiguraMatrix();
                         YPosTmp = 0;
                         XPosTmp = 5;
-                        GenerateTmpMatrix(0, TmpMatrix);
+                        GetNewFiguraIndex();
+                        GenerateTmpMatrix(GetNewFiguraIndex(), TmpMatrix);
+                        GenerateTmpMatrix(NextFigura, TmpNextMatrix);
                         CRoom = 1;
                     }
                     break;
@@ -389,7 +391,7 @@ int GetNewFiguraIndex()
 
     CRAND = NextFigura;
 
-    NextFigura = rand()%7;
+    NextFigura = 1;//rand()%7;
     //
     return CRAND;
 }
