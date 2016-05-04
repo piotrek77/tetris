@@ -85,7 +85,7 @@ public:
 // Create the Matrix
 TFigura FiguraMatrix[MATRIX_PIECES_X][MATRIX_PIECES_Y]; // this is the all tetris pieces - TFigura[x][y]
 TFigura TmpMatrix[4][4]; // Klocki (tetrimino) zlozone z czterech malych kwadratow zw. blokami
-TFigura TmpNextMatrix[4][4];
+TFigura TmpNextMatrix[4][4]; //klocek następny (wyświetlany po prawej stronie)
 
 int XPosTmp = 4;
 int YPosTmp = 0;
@@ -102,9 +102,11 @@ int Points = 0;
 Mix_Music *TetrisMusic = NULL;
 
 // Generator klockow
-int CRAND = 0;
-int DIF = 4;
-int NextFigura = 4;
+int CRAND = 0; //kształt bieżącej figury
+int DIF = 4; //zmienna nie używana, wcześniej użyta jako skok inkrementacji zmiany kształtu kolejnej figury
+int NextFigura = 4; //kształt następnej figury
+
+
 
 // Function Prototipes
 SDL_Surface *LoadSurfaceFromFile(std::string filename);
@@ -168,7 +170,7 @@ int main(int argc, char* args[])
     // Generate one tmp startup matrix
     GetNewFiguraIndex();
     GenerateTmpMatrix(GetNewFiguraIndex(), TmpMatrix);//losowanie klocka startowego
-    GenerateTmpMatrix(NextFigura, TmpNextMatrix);
+    GenerateTmpMatrix(NextFigura, TmpNextMatrix); //tworzenie klocka następnego (na potrzeby wyświetlania go po prawej stronie ekranu)
     // Start Music
     if (Mix_PlayingMusic() == 0)
     {
@@ -196,6 +198,7 @@ int main(int argc, char* args[])
                     if (XPosTmp > 0) XPosTmp -= 1;
                     break;
                 case SDLK_RIGHT:
+                    //przed przesunięciem w prawo sprawdzane jest czy klocek nie wyjdzie poza planszę
                     if (XPosTmp < MATRIX_PIECES_X - (WidthTmp + 1)) XPosTmp += 1;
                     break;
                 case SDLK_DOWN:
@@ -204,6 +207,12 @@ int main(int argc, char* args[])
                 case SDLK_UP:
                     // Rotate
                     RotateTmpMatrix();
+
+                    //po obróceniu klocka trzeba sprawdzić czy nie wyszedł poza planszę (prawa strona)
+                    if (XPosTmp >= MATRIX_PIECES_X - (WidthTmp + 1))
+                    {
+                        XPosTmp = MATRIX_PIECES_X - (WidthTmp+1);
+                    }
                     break;
                 case SDLK_RETURN:
                     if (CRoom == 1)
@@ -561,6 +570,9 @@ void PutInMatrix()
 
 }
 
+//Oblicza maksymalne rozmiary (szerokość, wysokość) figury
+//Rozmiar jest podany "informatyczne", tzn. WidthTmp = 2 oznacza, że szerokość = 3 :)
+//Obliczon wymiary umieszczane są w zmiennych globalnych: WidthTmp, HeightTmp
 void CalculateTmpSize()
 {
     int width = 0;
