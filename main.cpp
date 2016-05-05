@@ -222,7 +222,14 @@ int main(int argc, char* args[])
                     break;
                 case SDLK_UP:
                     // Rotate
+
                     RotateTmpMatrix();
+                    if (TestBlockColisionBoki()==true)
+                    {
+                        RotateTmpMatrix();
+                        RotateTmpMatrix();
+                        RotateTmpMatrix();
+                    }
 
                     //po obróceniu klocka trzeba sprawdzić czy nie wyszedł poza planszę (prawa strona)
                     if (XPosTmp >= MATRIX_PIECES_X - (WidthTmp + 1))
@@ -622,7 +629,7 @@ void CalculateTmpSize()
 
 bool TestBlockColisionBoki()
 {
-    if (YPosTmp == 20 - (HeightTmp + 1)) // -msize
+    if (YPosTmp >= 20 - (HeightTmp + 1)) // -msize
     {
         return true;
     }
@@ -661,7 +668,7 @@ bool TestBlockColisionBoki()
 
 bool TestBlockColision()
 {
-    if (YPosTmp == 20 - (HeightTmp + 1)) // -msize
+    if (YPosTmp >= 20 - (HeightTmp + 1)) // -msize
     {
         return true;
     }
