@@ -113,7 +113,6 @@ int NextFigura = 4; //kształt następnej figury
 SDL_Surface *LoadSurfaceFromFile(std::string filename);
 void         DrawSurface(int x, int y, SDL_Surface* source, SDL_Surface* destination);
 void         GenerateTmpMatrix(int FigIndex, TFigura figura[4][4]);
-void         GenerateTmpMatrix(int FigIndex);
 void         DrawTetrisMatrix();
 bool         LoadFiles();
 void         UnloadFiles();
@@ -676,10 +675,13 @@ bool TestBlockColision()
     {
         for (int ypt = 0; ypt < 4; ypt++)
         {
+            //sprawdzany każdy kwadracik spadającej figury
+
             if (TmpMatrix[xpt][ypt].Used == true)
             {
                 //
                 //
+                //sprawdzamy każdy kwadracik dużej macierzy
                 for (int xp = 0; xp < MATRIX_PIECES_X; xp++)
                 {
                     for (int yp = 0; yp < MATRIX_PIECES_Y; yp++)
@@ -737,7 +739,7 @@ void FillTmpColor(int color, TFigura figura[4][4])
 void VerifyLines()
 {
 
-    for (int yP = 20; yP > -1; yP--)
+    for (int yP =  MATRIX_PIECES_Y-1; yP > -1; yP--)
     {
         bool hU = false;
         for (int xP = 0; xP < MATRIX_PIECES_X; xP++)
